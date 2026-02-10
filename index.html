@@ -20,10 +20,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
             overflow-x: hidden;
             color: #5a3d5c;
-            /* Prevent scrollbar */
             overflow: hidden;
         }
 
@@ -33,12 +32,12 @@
             background-color: #fffaf7;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            padding: 30px;
+            padding: 25px 20px;
             position: relative;
             overflow: hidden;
             min-height: 500px;
             margin: 0 auto;
-            border: 15px solid transparent;
+            border: 12px solid transparent;
             /* Love letter design */
             background-image: 
                 radial-gradient(circle at 10% 10%, #ffebee 2px, transparent 2px),
@@ -55,30 +54,31 @@
         /* Heart decorations */
         .heart-decoration {
             position: absolute;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: #ff5a8c;
             opacity: 0.3;
             z-index: 0;
         }
 
-        .heart-decoration:nth-child(1) { top: 20px; left: 20px; }
-        .heart-decoration:nth-child(2) { top: 20px; right: 20px; }
-        .heart-decoration:nth-child(3) { bottom: 20px; left: 20px; }
-        .heart-decoration:nth-child(4) { bottom: 20px; right: 20px; }
-        .heart-decoration:nth-child(5) { top: 50%; left: 10px; transform: translateY(-50%); }
-        .heart-decoration:nth-child(6) { top: 50%; right: 10px; transform: translateY(-50%); }
+        .heart-decoration:nth-child(1) { top: 15px; left: 15px; }
+        .heart-decoration:nth-child(2) { top: 15px; right: 15px; }
+        .heart-decoration:nth-child(3) { bottom: 15px; left: 15px; }
+        .heart-decoration:nth-child(4) { bottom: 15px; right: 15px; }
+        .heart-decoration:nth-child(5) { top: 50%; left: 8px; transform: translateY(-50%); }
+        .heart-decoration:nth-child(6) { top: 50%; right: 8px; transform: translateY(-50%); }
 
         .page {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             width: 100%;
-            min-height: 440px;
+            min-height: 450px;
             transition: all 0.5s ease;
             text-align: center;
             position: relative;
             z-index: 1;
+            padding: 5px;
         }
 
         .hidden {
@@ -86,53 +86,62 @@
         }
 
         h1 {
-            font-size: 2.5rem;
-            color: #d63384;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            font-family: 'Brush Script MT', cursive;
-        }
-
-        h2 {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             color: #d63384;
             text-align: center;
             margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Brush Script MT', cursive;
+            line-height: 1.2;
+            padding: 0 10px;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: #d63384;
+            text-align: center;
+            margin-bottom: 12px;
+            padding: 0 10px;
+            line-height: 1.3;
         }
 
         p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-align: center;
-            margin-bottom: 30px;
-            line-height: 1.6;
+            margin-bottom: 20px;
+            line-height: 1.5;
             max-width: 600px;
+            padding: 0 15px;
         }
 
         .hint {
             background-color: #fff0f6;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 10px;
-            margin: 15px 0;
+            margin: 12px 10px;
             font-style: italic;
             border-left: 4px solid #d63384;
             border-right: 4px solid #d63384;
+            font-size: 1rem;
+            width: 90%;
+            max-width: 500px;
         }
 
         .button {
             background: linear-gradient(to right, #ff758c, #ff7eb3);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.3rem;
+            padding: 12px 30px;
+            font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 119, 140, 0.4);
             font-weight: bold;
             z-index: 10;
             position: relative;
+            min-width: 180px;
         }
 
         .button:hover {
@@ -144,17 +153,20 @@
             transform: translateY(0);
         }
 
-        /* Wordle Game Styles */
+        /* Wordle Game Styles - RESPONSIVE */
         .game-container {
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+            padding: 5px;
+            overflow: hidden;
         }
 
         .attempts-counter {
-            margin: 15px 0;
-            font-size: 1.2rem;
+            margin: 10px 0;
+            font-size: 1.1rem;
             color: #d63384;
             font-weight: bold;
         }
@@ -162,31 +174,32 @@
         .wordle-grid {
             display: grid;
             grid-template-rows: repeat(6, 1fr);
-            gap: 8px;
-            margin: 20px 0;
+            gap: 5px;
+            margin: 15px 0;
             width: 100%;
-            max-width: 350px;
+            max-width: 300px;
+            aspect-ratio: 5/6;
         }
 
         .wordle-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: 5px;
         }
 
         .wordle-cell {
             width: 100%;
-            aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             border: 2px solid #d0b7d5;
-            border-radius: 8px;
+            border-radius: 6px;
             background-color: white;
             text-transform: uppercase;
             transition: all 0.3s ease;
+            aspect-ratio: 1;
         }
 
         .wordle-cell.filled {
@@ -215,33 +228,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            margin-top: 20px;
+            gap: 6px;
+            margin-top: 15px;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
+            padding: 0 5px;
         }
 
         .keyboard-row {
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             width: 100%;
         }
 
         .key {
-            padding: 12px 0;
+            padding: 10px 0;
             flex: 1;
-            max-width: 40px;
+            max-width: 35px;
             background-color: #f0e6f5;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            aspect-ratio: 1;
         }
 
         .key:hover {
@@ -249,35 +264,37 @@
         }
 
         .key.wide {
-            max-width: 70px;
-            font-size: 0.9rem;
+            max-width: 60px;
+            font-size: 0.8rem;
+            aspect-ratio: auto;
         }
 
         /* Valentine Question Page */
         .question-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 30px;
+            gap: 20px;
+            margin-top: 20px;
             justify-content: center;
             align-items: center;
             position: relative;
-            min-height: 120px;
+            min-height: 100px;
             width: 100%;
+            padding: 0 10px;
         }
 
         #yes-button {
             background: linear-gradient(to right, #87d068, #5cb85c);
-            padding: 18px 50px;
-            font-size: 1.5rem;
+            padding: 15px 40px;
+            font-size: 1.3rem;
             z-index: 10;
             position: relative;
         }
 
         #no-button {
             background: linear-gradient(to right, #ff5a5f, #d9534f);
-            padding: 18px 50px;
-            font-size: 1.5rem;
+            padding: 15px 40px;
+            font-size: 1.3rem;
             position: relative;
             transition: all 0.3s ease;
             z-index: 5;
@@ -293,24 +310,25 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             text-align: center;
-            max-width: 400px;
+            max-width: 350px;
+            width: 90%;
             display: none;
         }
 
         .no-message h3 {
             color: #d63384;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
+            margin-bottom: 12px;
+            font-size: 1.6rem;
         }
 
         .no-message p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
         }
 
         .close-message {
@@ -329,37 +347,40 @@
             max-width: 600px;
             background-color: #fff9fb;
             border-radius: 15px;
-            padding: 30px;
+            padding: 25px 20px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            margin: 20px auto;
+            margin: 15px auto;
             position: relative;
             border: 2px solid #ffcce0;
             display: none;
             text-align: center;
+            overflow-y: auto;
+            max-height: 450px;
         }
 
         .letter-header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #d63384;
             position: relative;
         }
 
         .letter-header h3 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
         }
 
         .letter-content {
-            font-size: 1.2rem;
-            line-height: 1.8;
+            font-size: 1.1rem;
+            line-height: 1.6;
             color: #555;
-            min-height: 300px;
+            min-height: 250px;
             text-align: left;
+            padding: 0 10px;
         }
 
         .typing-line {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             opacity: 0;
             animation: fadeIn 0.5s forwards;
         }
@@ -371,41 +392,43 @@
         .verse {
             font-style: italic;
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
             color: #d63384;
             font-weight: bold;
+            padding: 0 10px;
         }
 
         .heart {
             color: #ff5a8c;
-            font-size: 1.4rem;
-            margin: 0 5px;
+            font-size: 1.2rem;
+            margin: 0 3px;
         }
 
         /* Audio Player */
         .audio-player {
-            margin-top: 30px;
+            margin-top: 25px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 0 10px;
         }
 
         .audio-controls {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 12px;
         }
 
         .audio-btn {
             background-color: #ff7eb3;
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -419,23 +442,23 @@
         }
 
         .audio-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #d63384;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: bold;
         }
 
         .audio-date {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #888;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-style: italic;
         }
 
         /* Heart particles */
         .heart-particle {
             position: absolute;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #ff5a8c;
             opacity: 0;
             z-index: 100;
@@ -444,9 +467,9 @@
 
         /* Countdown Timer */
         .countdown {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: #d63384;
-            margin: 30px 0;
+            margin: 25px 0;
             font-weight: bold;
             display: none;
         }
@@ -454,57 +477,59 @@
         /* Final Page */
         #final-page {
             display: none;
-            padding: 40px;
+            padding: 30px 20px;
             text-align: center;
+            overflow-y: auto;
+            max-height: 450px;
         }
 
         #final-page h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
             color: #d63384;
         }
 
         #final-page p {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
         }
 
         .final-hearts {
-            font-size: 3rem;
-            margin: 30px 0;
+            font-size: 2.5rem;
+            margin: 25px 0;
             color: #ff5a8c;
         }
 
         .final-message {
             background: linear-gradient(45deg, #ffafbd, #ffc3a0);
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
-            margin: 25px 0;
+            margin: 20px 0;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Background Music Controls */
         .music-controls {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .music-btn {
             background: rgba(255, 255, 255, 0.9);
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #d63384;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -518,12 +543,12 @@
 
         .music-info {
             background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 10px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #d63384;
             text-align: center;
-            max-width: 200px;
+            max-width: 180px;
             display: none;
         }
 
@@ -539,15 +564,16 @@
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            padding: 20px;
         }
 
         .rose-content {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 20px;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
+            max-width: 350px;
+            width: 100%;
             animation: modalFadeIn 0.5s ease;
             position: relative;
         }
@@ -558,9 +584,9 @@
         }
 
         .rose-gif-container {
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
+            width: 180px;
+            height: 180px;
+            margin: 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -575,120 +601,395 @@
 
         .modal-title {
             color: #d63384;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
         }
 
         .modal-subtitle {
             color: #ff3366;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
             font-weight: bold;
         }
 
         .modal-message {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #5a3d5c;
-            margin: 15px 0;
-            line-height: 1.6;
+            margin: 12px 0;
+            line-height: 1.5;
         }
 
         .close-modal {
             background: linear-gradient(to right, #ff758c, #ff7eb3);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 10px 25px;
             border-radius: 50px;
             font-size: 1.1rem;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         /* Footer */
         footer {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: center;
             color: #fff;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             opacity: 0.8;
         }
 
         /* Letter Seal */
         .letter-seal {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             background: #ff5a8c;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2rem;
-            right: 20px;
-            top: -40px;
+            font-size: 1.5rem;
+            right: 15px;
+            top: -30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             border: 3px solid white;
         }
 
-        /* Responsive adjustments */
+        /* Mobile-First Responsive Design */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
-                overflow: hidden;
             }
             
             .app-container {
-                padding: 20px;
+                padding: 20px 15px;
                 min-height: 450px;
+                border-width: 10px;
             }
             
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.5rem; }
-            .button { padding: 12px 30px; font-size: 1.1rem; }
-            .wordle-cell { font-size: 1.5rem; }
-            .key { padding: 15px 0; max-width: 35px; font-size: 1rem; }
-            .key.wide { max-width: 60px; }
-            .question-buttons { flex-direction: column; align-items: center; gap: 20px; }
-            .letter-container { padding: 20px; }
-            .letter-content { font-size: 1.1rem; }
-            .music-controls { top: 10px; right: 10px; }
-            .rose-content { padding: 20px; }
-            .modal-title { font-size: 1.6rem; }
-            .modal-subtitle { font-size: 1.2rem; }
-            .modal-message { font-size: 1.1rem; }
-            .rose-gif-container { width: 180px; height: 180px; }
+            h1 { font-size: 1.9rem; }
+            h2 { font-size: 1.4rem; }
+            p { font-size: 1rem; margin-bottom: 15px; }
+            
+            .button { 
+                padding: 10px 25px; 
+                font-size: 1.1rem;
+                min-width: 160px;
+            }
+            
+            .wordle-grid {
+                max-width: 280px;
+                gap: 4px;
+            }
+            
+            .wordle-cell { 
+                font-size: 1.3rem;
+                border-radius: 5px;
+            }
+            
+            .key { 
+                padding: 8px 0; 
+                max-width: 30px; 
+                font-size: 0.9rem;
+                border-radius: 4px;
+            }
+            
+            .key.wide { 
+                max-width: 55px;
+                font-size: 0.75rem;
+            }
+            
+            .keyboard {
+                gap: 5px;
+                max-width: 400px;
+            }
+            
+            .keyboard-row {
+                gap: 3px;
+            }
+            
+            .question-buttons { 
+                flex-direction: column; 
+                gap: 15px;
+                min-height: 90px;
+            }
+            
+            #yes-button, #no-button { 
+                padding: 12px 30px; 
+                font-size: 1.2rem;
+            }
+            
+            .letter-container { 
+                padding: 20px 15px;
+                max-height: 420px;
+            }
+            
+            .letter-header h3 {
+                font-size: 1.6rem;
+            }
+            
+            .letter-content { 
+                font-size: 1rem;
+                min-height: 220px;
+            }
+            
+            .audio-player {
+                margin-top: 20px;
+            }
+            
+            .audio-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .final-hearts {
+                font-size: 2.2rem;
+            }
             
             .heart-decoration {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
         }
 
         @media (max-width: 480px) {
             body {
-                padding: 5px;
-                overflow: hidden;
+                padding: 8px;
             }
             
             .app-container {
-                padding: 15px;
+                padding: 15px 12px;
                 min-height: 420px;
+                border-width: 8px;
             }
             
-            h1 { font-size: 1.7rem; }
-            .wordle-cell { font-size: 1.3rem; }
-            .key { max-width: 30px; padding: 12px 0; font-size: 0.9rem; }
-            .key.wide { max-width: 55px; }
-            .question-buttons { gap: 15px; }
-            #yes-button, #no-button { padding: 15px 30px; font-size: 1.2rem; }
-            .rose-content { padding: 15px; }
-            .modal-title { font-size: 1.4rem; }
-            .modal-subtitle { font-size: 1.1rem; }
-            .modal-message { font-size: 1rem; }
-            .rose-gif-container { width: 150px; height: 150px; }
+            h1 { 
+                font-size: 1.7rem;
+                margin-bottom: 12px;
+            }
+            
+            h2 { 
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+            
+            p { 
+                font-size: 0.95rem;
+                margin-bottom: 12px;
+                padding: 0 10px;
+            }
+            
+            .hint {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+                margin: 10px 5px;
+            }
+            
+            .button {
+                padding: 10px 20px;
+                font-size: 1rem;
+                min-width: 140px;
+                margin-top: 12px;
+            }
+            
+            .wordle-grid {
+                max-width: 260px;
+                gap: 3px;
+                margin: 10px 0;
+            }
+            
+            .wordle-cell {
+                font-size: 1.2rem;
+                border-width: 1.5px;
+            }
+            
+            .key {
+                padding: 7px 0;
+                max-width: 28px;
+                font-size: 0.85rem;
+            }
+            
+            .key.wide {
+                max-width: 50px;
+                font-size: 0.7rem;
+                padding: 7px 5px;
+            }
+            
+            .keyboard {
+                max-width: 350px;
+                margin-top: 12px;
+            }
+            
+            .question-buttons {
+                gap: 12px;
+                min-height: 80px;
+            }
+            
+            #yes-button, #no-button {
+                padding: 10px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .letter-container {
+                padding: 15px 12px;
+                max-height: 400px;
+            }
+            
+            .letter-seal {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+                right: 10px;
+                top: -25px;
+            }
+            
+            .letter-header h3 {
+                font-size: 1.4rem;
+            }
+            
+            .letter-content {
+                font-size: 0.95rem;
+                min-height: 200px;
+            }
+            
+            .countdown {
+                font-size: 1.6rem;
+                margin: 20px 0;
+            }
+            
+            #final-page h2 {
+                font-size: 1.8rem;
+            }
+            
+            #final-page p {
+                font-size: 1rem;
+            }
+            
+            .final-message {
+                padding: 15px;
+            }
+            
+            .music-controls {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .music-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
             
             .heart-decoration {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .wordle-grid {
+                max-width: 240px;
+            }
+            
+            .wordle-cell {
+                font-size: 1.1rem;
+            }
+            
+            .key {
+                max-width: 25px;
+                font-size: 0.8rem;
+                padding: 6px 0;
+            }
+            
+            .key.wide {
+                max-width: 45px;
+                font-size: 0.65rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
                 font-size: 1.2rem;
+            }
+            
+            .button {
+                padding: 8px 18px;
+                font-size: 0.95rem;
+                min-width: 130px;
+            }
+        }
+
+        /* For very tall screens */
+        @media (min-height: 800px) {
+            .app-container {
+                min-height: 550px;
+            }
+            
+            .page {
+                min-height: 500px;
+            }
+            
+            .letter-container {
+                max-height: 500px;
+            }
+        }
+
+        /* For landscape orientation on mobile */
+        @media (max-height: 600px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+            }
+            
+            .app-container {
+                min-height: 350px;
+                padding: 15px 10px;
+            }
+            
+            .page {
+                min-height: 320px;
+            }
+            
+            .wordle-grid {
+                max-width: 220px;
+                gap: 2px;
+            }
+            
+            .wordle-cell {
+                font-size: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+            
+            p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+            
+            .button {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                margin-top: 10px;
+            }
+            
+            .letter-container {
+                max-height: 300px;
+                padding: 15px 10px;
+            }
+            
+            .letter-content {
+                min-height: 150px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -809,12 +1110,12 @@
                     <div id="audio-time">0:00 / 0:00</div>
                 </div>
                 <audio id="voice-memo" preload="metadata">
-                    <source src="audio.mp3" type="audio/mpeg">
+                    <source src="song.mp3" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             </div>
             
-            <button id="restart-button" class="button" style="margin-top: 30px;">
+            <button id="restart-button" class="button" style="margin-top: 25px;">
                 Click Me! 💖
             </button>
         </div>
@@ -906,7 +1207,7 @@
         const closeRoseBtn = document.getElementById('close-rose-btn');
         const roseGif = document.getElementById('rose-gif');
 
-        // Keyboard layout
+        // Keyboard layout - Adjusted for mobile
         const keyboardRows = [
             ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
             ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -959,11 +1260,42 @@
             // Make sure no scrollbar appears
             document.body.style.overflow = 'hidden';
             window.addEventListener('resize', preventScrollbar);
+            
+            // Adjust layout on window resize
+            window.addEventListener('resize', adjustLayoutForScreen);
+            adjustLayoutForScreen(); // Initial adjustment
         }
         
         // Prevent scrollbar from appearing
         function preventScrollbar() {
             document.body.style.overflow = 'hidden';
+        }
+        
+        // Adjust layout for different screen sizes
+        function adjustLayoutForScreen() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            // Adjust Wordle grid size for very small screens
+            if (width < 400) {
+                document.querySelector('.wordle-grid').style.maxWidth = '240px';
+                document.querySelectorAll('.key').forEach(key => {
+                    if (!key.classList.contains('wide')) {
+                        key.style.maxWidth = '25px';
+                        key.style.fontSize = '0.8rem';
+                    }
+                });
+            } else if (width < 500) {
+                document.querySelector('.wordle-grid').style.maxWidth = '260px';
+            }
+            
+            // Adjust for landscape orientation on mobile
+            if (height < 500 && width > height) {
+                document.querySelector('.app-container').style.minHeight = '350px';
+                document.querySelectorAll('.page').forEach(page => {
+                    page.style.minHeight = '320px';
+                });
+            }
         }
 
         // Start music on first user interaction
@@ -1173,6 +1505,9 @@
             
             // Make sure no scrollbar
             document.body.style.overflow = 'hidden';
+            
+            // Adjust layout for game page
+            adjustLayoutForScreen();
         }
 
         // Show question page
@@ -1390,7 +1725,7 @@
             heart.style.top = `${y}px`;
             
             // Random size
-            const size = Math.random() * 1.5 + 1;
+            const size = Math.random() * 1.2 + 0.8;
             heart.style.fontSize = `${size}rem`;
             
             // Random color variation
