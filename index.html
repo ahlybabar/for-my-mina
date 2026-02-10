@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Can You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            overflow-x: hidden;
+            color: #5a3d5c;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Remove scrollbar */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Letter Opening Animation */
+        .letter-opening-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .letter-closed {
+            position: relative;
+            width: min(300px, 90vw);
+            height: min(200px, 60vw);
+            background: linear-gradient(135deg, #d63384, #ff3366);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.5s ease;
+        }
+
+        .letter-closed:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+
+        .letter-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #ff3366, #d63384);
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transform-origin: top;
+            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 2;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .letter-flap:before {
+            content: '';
+            position: absolute;
+            top: 95%;
+            left: 10%;
+            width: 80%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+
+        .letter-content-initial {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            color: #d63384;
+            font-weight: bold;
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            border-radius: 0 0 15px 15px;
+            z-index: 1;
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .envelope-hearts {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .envelope-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.5rem;
+            animation: floatHeart 3s ease-in-out infinite;
+        }
+
+        .envelope-heart:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .envelope-heart:nth-child(2) { top: 30%; right: 25%; animation-delay: 0.5s; }
+        .envelope-heart:nth-child(3) { bottom: 40%; left: 30%; animation-delay: 1s; }
+        .envelope-heart:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1.5s; }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .letter-closed.open {
+            animation: letterOpen 1.5s ease forwards;
+        }
+
+        @keyframes letterOpen {
+            0% { transform: scale(1) translateY(0) rotateX(0); }
+            20% { transform: scale(1.1) translateY(-20px) rotateX(10deg); }
+            40% { transform: scale(1.1) translateY(-20px) rotateX(10deg); }
+            60% { transform: scale(1.1) translateY(-20px) rotateX(10deg); box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5); }
+            100% { transform: scale(0) translateY(100px) rotateX(20deg); opacity: 0; }
+        }
+
+        .letter-opening-container.fade-out {
+            animation: fadeOut 1s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: min(800px, 95vw);
+            background-color: #fff9fb;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            padding: min(40px, 5vw) min(35px, 4vw);
+            position: relative;
+            overflow: hidden;
+            min-height: min(500px, 70vh);
+            margin: 0 auto;
+            border: 2px solid #ffcce0;
+            /* Love letter paper texture */
+            background-image: 
+                radial-gradient(#ffcce0 2px, transparent 2px),
+                radial-gradient(#ffcce0 2px, transparent 2px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s;
+        }
+
+        .app-container.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Heart decorations on the letter */
+        .letter-heart {
+            position: absolute;
+            color: #ff5a8c;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        .letter-heart.top-left { top: 10px; left: 10px; }
+        .letter-heart.top-right { top: 10px; right: 10px; }
+        .letter-heart.bottom-left { bottom: 10px; left: 10px; }
+        .letter-heart.bottom-right { bottom: 10px; right: 10px; }
+
+        /* Red heart border */
+        .heart-border {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed #ff5a8c;
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Wax seal effect */
+        .wax-seal {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: clamp(40px, 8vw, 60px);
+            height: clamp(40px, 8vw, 60px);
+            background: radial-gradient(circle at 30% 30%, #d63384, #ff3366);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            border: 2px solid white;
+        }
+
+        .page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: min(440px, 60vh);
+            transition: all 0.5s ease;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #d63384;
+            text-align: center;
+            margin-bottom: clamp(15px, 3vw, 20px);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            line-height: 1.3;
+            padding: 0 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff5a8c, transparent);
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            color: #d63384;
+            text-align: center;
+            margin-bottom: clamp(12px, 2.5vw, 15px);
+            line-height: 1.3;
+            padding: 0 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        p {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            text-align: center;
+            margin-bottom: clamp(20px, 4vw, 30px);
+            line-height: 1.5;
+            max-width: 100%;
+            padding: 0 clamp(10px, 3vw, 15px);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .hint {
+            background-color: rgba(255, 240, 246, 0.8);
+            padding: clamp(10px, 2vw, 12px) clamp(15px, 3vw, 20px);
+            border-radius: 10px;
+            margin: clamp(12px, 2.5vw, 15px) clamp(8px, 2vw, 10px);
+            font-style: italic;
+            border-left: 4px solid #d63384;
+            position: relative;
+            border: 1px dashed #ff5a8c;
+            width: min(90%, 500px);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .button {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: clamp(12px, 2.5vw, 15px) clamp(25px, 5vw, 40px);
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: clamp(15px, 3vw, 20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 119, 140, 0.4);
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-width: min(200px, 70vw);
+            max-width: 90%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 20px rgba(255, 119, 140, 0.6);
+        }
+
+        .button:hover:before {
+            left: 100%;
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        /* Wordle Game Styles */
+        .game-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 clamp(8px, 2vw, 10px);
+        }
+
+        .attempts-counter {
+            margin: clamp(12px, 2.5vw, 15px) 0;
+            font-size: clamp(1.1rem, 3vw, 1.2rem);
+            color: #d63384;
+            font-weight: bold;
+            background: rgba(255, 240, 246, 0.8);
+            padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+            border-radius: 10px;
+            border: 1px dashed #ff5a8c;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .wordle-grid {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: clamp(4px, 1vw, 6px);
+            margin: clamp(15px, 3vw, 20px) 0;
+            width: 100%;
+            max-width: min(320px, 90vw);
+            aspect-ratio: 5/6;
+        }
+
+        .wordle-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: clamp(4px, 1vw, 6px);
+        }
+
+        .wordle-cell {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+            font-weight: bold;
+            border: 2px solid #d0b7d5;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1;
+        }
+
+        .wordle-cell.filled {
+            border-color: #a370b5;
+            transform: scale(1.05);
+        }
+
+        .wordle-cell.correct {
+            background-color: #87d068;
+            border-color: #87d068;
+            color: white;
+        }
+
+        .wordle-cell.present {
+            background-color: #f8d568;
+            border-color: #f8d568;
+            color: white;
+        }
+
+        .wordle-cell.absent {
+            background-color: #a9a9a9;
+            border-color: #a9a9a9;
+            color: white;
+        }
+
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(4px, 1vw, 6px);
+            margin-top: clamp(15px, 3vw, 20px);
+            width: 100%;
+            max-width: min(500px, 95vw);
+            padding: 0 clamp(8px, 2vw, 10px);
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: clamp(3px, 0.8vw, 4px);
+            width: 100%;
+        }
+
+        .key {
+            padding: clamp(10px, 2vw, 12px) 0;
+            flex: 1;
+            min-width: clamp(26px, 7vw, 28px);
+            max-width: clamp(36px, 10vw, 40px);
+            background-color: rgba(240, 230, 245, 0.9);
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            touch-action: manipulation;
+        }
+
+        .key:hover {
+            background-color: #e0d0e8;
+            transform: translateY(-2px);
+        }
+
+        .key.wide {
+            max-width: clamp(55px, 15vw, 65px);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        /* Valentine Question Page */
+        .question-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(15px, 3vw, 20px);
+            margin-top: clamp(20px, 4vw, 30px);
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: min(100px, 15vh);
+            width: 100%;
+            padding: 0 clamp(8px, 2vw, 10px);
+        }
+
+        #yes-button {
+            background: linear-gradient(to right, #87d068, #5cb85c);
+            padding: clamp(15px, 3vw, 18px) clamp(35px, 5vw, 50px);
+            font-size: clamp(1.3rem, 3.5vw, 1.5rem);
+            z-index: 10;
+            position: relative;
+        }
+
+        #no-button {
+            background: linear-gradient(to right, #ff5a5f, #d9534f);
+            padding: clamp(15px, 3vw, 18px) clamp(35px, 5vw, 50px);
+            font-size: clamp(1.3rem, 3.5vw, 1.5rem);
+            position: relative;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        #no-button:hover {
+            transform: translateY(-3px);
+        }
+
+        .no-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: clamp(20px, 4vw, 25px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+            max-width: min(90vw, 350px);
+            display: none;
+            border: 2px solid #ffcce0;
+        }
+
+        .no-message h3 {
+            color: #d63384;
+            margin-bottom: clamp(12px, 2.5vw, 15px);
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+        }
+
+        .no-message p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: clamp(15px, 3vw, 20px);
+        }
+
+        .close-message {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        /* Animated Letter */
+        .letter-container {
+            width: 100%;
+            max-width: min(600px, 95vw);
+            background-color: #fff9fb;
+            border-radius: 15px;
+            padding: clamp(20px, 4vw, 25px) clamp(15px, 3vw, 20px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin: clamp(15px, 3vw, 20px) auto;
+            position: relative;
+            border: 2px solid #ffcce0;
+            display: none;
+            text-align: center;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: clamp(15px, 3vw, 20px);
+            color: #d63384;
+            position: relative;
+        }
+
+        .letter-header h3 {
+            font-size: clamp(1.7rem, 4vw, 2rem);
+            margin-bottom: clamp(8px, 2vw, 10px);
+            line-height: 1.3;
+        }
+
+        .letter-content {
+            font-size: clamp(1.1rem, 3vw, 1.2rem);
+            line-height: 1.7;
+            color: #555;
+            min-height: min(250px, 40vh);
+            text-align: left;
+            padding: clamp(12px, 2.5vw, 15px);
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            border: 1px dashed #ffcce0;
+            overflow-y: auto;
+            max-height: min(300px, 50vh);
+        }
+
+        .typing-line {
+            margin-bottom: clamp(12px, 2.5vw, 15px);
+            opacity: 0;
+            animation: fadeInTyping 0.5s forwards;
+        }
+
+        @keyframes fadeInTyping {
+            to { opacity: 1; }
+        }
+
+        .verse {
+            font-style: italic;
+            text-align: center;
+            margin-top: clamp(20px, 4vw, 25px);
+            color: #d63384;
+            font-weight: bold;
+            padding: clamp(12px, 2.5vw, 15px);
+            background: rgba(255, 240, 246, 0.8);
+            border-radius: 10px;
+            border: 1px dashed #ff5a8c;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        .heart {
+            color: #ff5a8c;
+            font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+            margin: 0 3px;
+        }
+
+        /* Audio Player */
+        .audio-player {
+            margin-top: clamp(20px, 4vw, 25px);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 240, 246, 0.8);
+            padding: clamp(15px, 3vw, 20px) clamp(12px, 2.5vw, 15px);
+            border-radius: 15px;
+            border: 1px dashed #ff5a8c;
+            max-width: min(500px, 95vw);
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 2.5vw, 15px);
+            margin-top: clamp(12px, 2.5vw, 15px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .audio-btn {
+            background-color: #ff7eb3;
+            color: white;
+            border: none;
+            width: clamp(45px, 10vw, 50px);
+            height: clamp(45px, 10vw, 50px);
+            border-radius: 50%;
+            font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .audio-btn:hover {
+            background-color: #ff5a8c;
+            transform: scale(1.1);
+        }
+
+        .audio-title {
+            font-size: clamp(1.1rem, 3vw, 1.2rem);
+            color: #d63384;
+            margin-bottom: clamp(6px, 1.5vw, 8px);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .audio-date {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            color: #888;
+            margin-bottom: clamp(12px, 2.5vw, 15px);
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Heart particles */
+        .heart-particle {
+            position: absolute;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #ff5a8c;
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            font-size: clamp(1.8rem, 4vw, 2rem);
+            color: #d63384;
+            margin: clamp(20px, 4vw, 25px) 0;
+            font-weight: bold;
+            display: none;
+            background: rgba(255, 240, 246, 0.8);
+            padding: clamp(12px, 2.5vw, 15px);
+            border-radius: 15px;
+            border: 1px dashed #ff5a8c;
+            text-align: center;
+        }
+
+        /* Final Page */
+        #final-page {
+            display: none;
+            padding: clamp(25px, 5vw, 30px) clamp(15px, 3vw, 20px);
+            text-align: center;
+        }
+
+        #final-page h2 {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            margin-bottom: clamp(15px, 3vw, 20px);
+            color: #d63384;
+        }
+
+        #final-page p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            margin-bottom: clamp(15px, 3vw, 20px);
+        }
+
+        .final-hearts {
+            font-size: clamp(2.5rem, 6vw, 3rem);
+            margin: clamp(20px, 4vw, 25px) 0;
+            color: #ff5a8c;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .final-message {
+            background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+            padding: clamp(15px, 3vw, 20px);
+            border-radius: 15px;
+            margin: clamp(15px, 3vw, 20px) 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid white;
+        }
+
+        /* Background Music Controls */
+        .music-controls {
+            position: fixed;
+            top: clamp(10px, 2vw, 15px);
+            right: clamp(10px, 2vw, 15px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(6px, 1.5vw, 8px);
+        }
+
+        .music-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 50%;
+            width: clamp(40px, 8vw, 45px);
+            height: clamp(40px, 8vw, 45px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            color: #d63384;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #ffcce0;
+            z-index: 1001;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background: white;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .music-info {
+            background: rgba(255, 255, 255, 0.95);
+            padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2vw, 12px);
+            border-radius: 10px;
+            font-size: clamp(0.75rem, 2vw, 0.8rem);
+            color: #d63384;
+            text-align: center;
+            max-width: min(180px, 40vw);
+            display: none;
+            border: 1px solid #ffcce0;
+        }
+
+        /* Rose Modal */
+        .rose-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            padding: clamp(15px, 3vw, 20px);
+        }
+
+        .rose-content {
+            background: white;
+            padding: clamp(20px, 4vw, 25px);
+            border-radius: 20px;
+            text-align: center;
+            max-width: min(400px, 95vw);
+            width: 100%;
+            animation: modalFadeIn 0.5s ease;
+            position: relative;
+            border: 3px solid #ffcce0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.8) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .rose-gif-container {
+            width: min(200px, 50vw);
+            height: min(200px, 50vw);
+            margin: clamp(15px, 3vw, 20px) auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 240, 246, 0.5);
+            border-radius: 15px;
+            padding: clamp(8px, 2vw, 10px);
+            border: 2px dashed #ff5a8c;
+        }
+
+        .rose-gif {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .modal-title {
+            color: #d63384;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            margin-bottom: clamp(8px, 2vw, 10px);
+            line-height: 1.3;
+        }
+
+        .modal-subtitle {
+            color: #ff3366;
+            font-size: clamp(1.2rem, 3vw, 1.3rem);
+            margin-bottom: clamp(12px, 2.5vw, 15px);
+            font-weight: bold;
+        }
+
+        .modal-message {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #5a3d5c;
+            margin: clamp(12px, 2.5vw, 15px) 0;
+            line-height: 1.5;
+            padding: clamp(12px, 2.5vw, 15px);
+            background: rgba(255, 240, 246, 0.5);
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: clamp(10px, 2.5vw, 12px) clamp(25px, 5vw, 30px);
+            border-radius: 50px;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            cursor: pointer;
+            margin-top: clamp(12px, 2.5vw, 15px);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: clamp(15px, 3vw, 20px);
+            text-align: center;
+            color: #fff;
+            font-size: clamp(0.75rem, 2vw, 0.8rem);
+            opacity: 0.8;
+            padding: 0 clamp(8px, 2vw, 10px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                justify-content: flex-start;
+                min-height: -webkit-fill-available;
+            }
+            
+            .app-container {
+                padding: clamp(20px, 4vw, 25px) clamp(15px, 3vw, 20px);
+                min-height: auto;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .page {
+                min-height: min(350px, 50vh);
+            }
+            
+            .letter-closed {
+                width: min(250px, 85vw);
+                height: min(170px, 55vw);
+            }
+            
+            .hint {
+                width: 95%;
+            }
+            
+            .wordle-grid {
+                max-width: min(280px, 85vw);
+            }
+            
+            .keyboard {
+                max-width: 95%;
+            }
+            
+            .question-buttons {
+                flex-direction: column;
+                gap: clamp(12px, 2.5vw, 15px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .app-container {
+                padding: clamp(15px, 3vw, 20px) clamp(10px, 2.5vw, 15px);
+                border-radius: 12px;
+            }
+            
+            .letter-closed {
+                width: min(220px, 80vw);
+                height: min(150px, 50vw);
+            }
+            
+            .page {
+                min-height: min(300px, 45vh);
+            }
+            
+            .button {
+                min-width: min(180px, 65vw);
+                padding: 12px 25px;
+            }
+            
+            .wordle-grid {
+                max-width: min(250px, 80vw);
+            }
+            
+            .wordle-cell {
+                font-size: 1.4rem;
+            }
+            
+            .key {
+                min-width: 22px;
+                font-size: 0.9rem;
+                padding: 8px 0;
+            }
+            
+            .key.wide {
+                max-width: 45px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            .app-container {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+            
+            .page {
+                min-height: min(300px, 45vh);
+            }
+            
+            .letter-content {
+                max-height: min(200px, 35vh);
+            }
+        }
+        
+        /* Prevent scroll on all containers */
+        .page, .game-container, .letter-container, .final-message {
+            overflow: hidden;
+        }
+        
+        /* Ensure full viewport height on mobile */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* Fix for very small screens */
+        @media (max-width: 350px) {
+            .app-container {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .wordle-grid {
+                max-width: 230px;
+            }
+            
+            .wordle-cell {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Letter Opening Animation -->
+    <div class="letter-opening-container" id="letter-opening-container">
+        <div class="letter-closed" id="letter-closed">
+            <div class="letter-flap">To My Carmina 💖</div>
+            <div class="letter-content-initial">Click to open your Valentine's Day surprise!</div>
+            <div class="envelope-hearts">
+                <div class="envelope-heart">❤️</div>
+                <div class="envelope-heart">❤️</div>
+                <div class="envelope-heart">❤️</div>
+                <div class="envelope-heart">❤️</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Music Controls -->
+    <div class="music-controls">
+        <button id="music-toggle" class="music-btn">
+            <i class="fas fa-music"></i>
+        </button>
+        <div class="music-info" id="music-info">
+            "Can't Help Falling In Love" - Haley Reinhart
+        </div>
+        <audio id="background-music" loop>
+            <source src="song.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="app-container" id="app-container">
+        <!-- Love letter decorative hearts -->
+        <div class="letter-heart top-left">❤️</div>
+        <div class="letter-heart top-right">❤️</div>
+        <div class="letter-heart bottom-left">❤️</div>
+        <div class="letter-heart bottom-right">❤️</div>
+        <div class="heart-border"></div>
+        <div class="wax-seal">💌</div>
+
+        <!-- Landing Page -->
+        <div id="landing-page" class="page">
+            <h1>Can You Be My Valentine?</h1>
+            <p>Play the game to find out if Carmina will say YES!</p>
+            <div class="hint">
+                <i class="fas fa-heart heart"></i> A special game for a special person <i class="fas fa-heart heart"></i>
+            </div>
+            <button id="start-button" class="button">
+                <i class="fas fa-play-circle"></i> Start Game
+            </button>
+        </div>
+
+        <!-- Wordle Mini-Game -->
+        <div id="game-page" class="page hidden">
+            <h2>Valentine Wordle</h2>
+            <p>Guess the 5-letter word. You have 6 attempts!</p>
+            <div class="hint">Hint: "This was our first topic wayyy back then"</div>
+            
+            <div class="game-container">
+                <div class="attempts-counter">Attempts: <span id="attempts">0</span>/6</div>
+                
+                <div id="wordle-grid" class="wordle-grid">
+                    <!-- Wordle grid will be generated by JS -->
+                </div>
+                
+                <div class="keyboard">
+                    <!-- Keyboard rows will be generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Valentine Question Page -->
+        <div id="question-page" class="page hidden">
+            <h2>Will you be my Valentine, Carmina?</h2>
+            <p>I've loved every moment with you and I can't wait for more</p>
+            
+            <div class="question-buttons">
+                <button id="yes-button" class="button">YES! ❤️</button>
+                <button id="no-button" class="button">No</button>
+            </div>
+        </div>
+        
+        <!-- Animated Love Letter -->
+        <div id="letter-container" class="letter-container">
+            <div class="letter-header">
+                <h3>Happy Valentine's Day, my Carmina <i class="fas fa-heart heart"></i></h3>
+                <p>A letter just for you...</p>
+            </div>
+            
+            <div id="letter-content" class="letter-content">
+                <!-- Letter content will be typed here -->
+            </div>
+            
+            <div class="verse">
+                "I have found the one whom my soul loves." – Song of Solomon 3:4 <i class="fas fa-heart heart"></i>
+            </div>
+            
+            <div id="countdown" class="countdown">
+                Next page in: <span id="countdown-timer">5</span>
+            </div>
+        </div>
+
+        <!-- Final Page -->
+        <div id="final-page" class="page">
+            <h2>Thank You, My Love! ❤️</h2>
+            <div class="final-hearts">
+                <i class="fas fa-heart"></i> <i class="fas fa-heart"></i> <i class="fas fa-heart"></i>
+            </div>
+            
+            <div class="final-message">
+                <p>You've made me the happiest person in the world by being my Valentine!</p>
+                <p>I promise to cherish you, love you, and make every day special for you.</p>
+            </div>
+            
+            <p>This is just the beginning of our beautiful journey together.</p>
+            <p>I love you more than words can express, Carmina.</p>
+            
+            <!-- Voice Message Section -->
+            <div class="audio-player">
+                <div class="audio-title">A special voice message for you:</div>
+                <div class="audio-date">"For my future wife" - September 17, 2025</div>
+                <div class="audio-controls">
+                    <button id="play-btn" class="audio-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button id="pause-btn" class="audio-btn">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <div id="audio-time">0:00 / 0:00</div>
+                </div>
+                <audio id="voice-memo" preload="metadata">
+                    <source src="song.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            
+            <button id="restart-button" class="button" style="margin-top: 30px;">
+                Click Me! 💖
+            </button>
+        </div>
+    </div>
+
+    <!-- No Button Message -->
+    <div id="no-message" class="no-message">
+        <h3>Nope, you can't! 😜</h3>
+        <p>Sorry, but "No" is not an option when it comes to being my Valentine!</p>
+        <p>You're stuck with me forever, my love! 💖</p>
+        <p>Now go ahead and click "YES!" like I know you want to! 😘</p>
+        <button class="close-message" id="close-message">Okay, fine! ❤️</button>
+    </div>
+
+    <!-- Rose Modal -->
+    <div id="rose-modal" class="rose-modal">
+        <div class="rose-content">
+            <h2 class="modal-title">I have one more surprise for you...</h2>
+            <p class="modal-subtitle">For My Beautiful Carmina</p>
+            
+            <div class="rose-gif-container">
+                <img src="rose.gif" alt="Animated Rose" class="rose-gif" id="rose-gif">
+            </div>
+            
+            <p class="modal-message">Happy Valentine's Day, my Carmina! 💖<br>
+            This beautiful rose represents my love for you - forever growing and blooming!</p>
+            <button id="close-rose-btn" class="close-modal">Thank You! ❤️</button>
+        </div>
+    </div>
+    
+    <footer>
+        Made with <i class="fas fa-heart" style="color:#ff5a8c;"></i> for Carmina
+    </footer>
+
+    <script>
+        // Game state
+        const gameState = {
+            currentPage: 'landing',
+            targetWord: 'BALUT',
+            currentGuess: '',
+            guesses: [],
+            currentRow: 0,
+            gameOver: false,
+            maxAttempts: 6,
+            letterIndex: 0,
+            letterLines: [
+                "Happy Valentine's Day, my Carmina ❤️",
+                "",
+                "I know I've said this before, but it will always be true.",
+                "My love for you grows more every single day.",
+                "You make my life lighter, warmer, and more meaningful just by being in it.",
+                "I'm so grateful for you, for your love, and for all the little moments we share.",
+                "I choose you today and every day, and I promise to keep loving you more deeply as time goes on.",
+                "",
+                "Every moment with you is a treasure, and I can't wait to create countless more memories together.",
+                "",
+                "Forever yours,",
+                "",
+                "Your Valentine ❤️"
+            ],
+            musicPlaying: false,
+            letterOpened: false
+        };
+
+        // DOM Elements
+        const landingPage = document.getElementById('landing-page');
+        const gamePage = document.getElementById('game-page');
+        const questionPage = document.getElementById('question-page');
+        const letterContainer = document.getElementById('letter-container');
+        const finalPage = document.getElementById('final-page');
+        const startButton = document.getElementById('start-button');
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const wordleGrid = document.getElementById('wordle-grid');
+        const attemptsDisplay = document.getElementById('attempts');
+        const letterContent = document.getElementById('letter-content');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const audioTime = document.getElementById('audio-time');
+        const voiceMemo = document.getElementById('voice-memo');
+        const noMessage = document.getElementById('no-message');
+        const closeMessageBtn = document.getElementById('close-message');
+        const countdownElement = document.getElementById('countdown');
+        const countdownTimer = document.getElementById('countdown-timer');
+        const restartButton = document.getElementById('restart-button');
+        const musicToggle = document.getElementById('music-toggle');
+        const backgroundMusic = document.getElementById('background-music');
+        const musicInfo = document.getElementById('music-info');
+        const roseModal = document.getElementById('rose-modal');
+        const closeRoseBtn = document.getElementById('close-rose-btn');
+        const roseGif = document.getElementById('rose-gif');
+        const letterClosed = document.getElementById('letter-closed');
+        const letterOpeningContainer = document.getElementById('letter-opening-container');
+        const appContainer = document.getElementById('app-container');
+
+        // Keyboard layout
+        const keyboardRows = [
+            ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+            ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
+        ];
+
+        // Initialize the app
+        function init() {
+            // Set initial viewport height for mobile
+            setViewportHeight();
+            
+            // Create Wordle grid
+            createWordleGrid();
+            
+            // Create virtual keyboard
+            createKeyboard();
+            
+            // Set up event listeners
+            startButton.addEventListener('click', startGame);
+            yesButton.addEventListener('click', showLoveLetter);
+            noButton.addEventListener('click', showNoMessage);
+            
+            // Set up audio controls
+            playBtn.addEventListener('click', playAudio);
+            pauseBtn.addEventListener('click', pauseAudio);
+            voiceMemo.addEventListener('timeupdate', updateAudioTime);
+            
+            // Set up message close button
+            closeMessageBtn.addEventListener('click', closeNoMessage);
+            
+            // Set up restart button
+            restartButton.addEventListener('click', showRoseModal);
+            
+            // Set up music controls
+            musicToggle.addEventListener('click', toggleMusic);
+            backgroundMusic.volume = 0.3; // Set to 30% volume
+            
+            // Set up rose modal
+            closeRoseBtn.addEventListener('click', () => {
+                roseModal.style.display = 'none';
+                restartGame();
+            });
+            
+            // Set up letter opening
+            letterClosed.addEventListener('click', openLetter);
+            
+            // Add keyboard event listener for physical keyboard
+            document.addEventListener('keydown', handlePhysicalKeyboard);
+            
+            // Initialize audio time display
+            updateAudioTime();
+            
+            // Prevent scrolling
+            preventScrolling();
+            
+            // Handle window resize
+            window.addEventListener('resize', handleResize);
+            window.addEventListener('orientationchange', handleResize);
+        }
+
+        // Set viewport height for mobile
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // Handle window resize
+        function handleResize() {
+            setViewportHeight();
+            // Re-center content if needed
+            if (gameState.currentPage === 'game') {
+                setTimeout(centerGameContent, 100);
+            }
+        }
+
+        // Center game content
+        function centerGameContent() {
+            const container = document.querySelector('.game-container');
+            if (container) {
+                const windowHeight = window.innerHeight;
+                const containerHeight = container.offsetHeight;
+                const offset = Math.max(0, (windowHeight - containerHeight) / 2);
+                container.style.marginTop = `${offset}px`;
+            }
+        }
+
+        // Open letter animation - IMPROVED
+        function openLetter() {
+            if (gameState.letterOpened) return;
+            
+            gameState.letterOpened = true;
+            
+            // Add open class to trigger flap animation
+            letterClosed.classList.add('open');
+            
+            // Start music on letter opening
+            startMusicOnInteraction();
+            
+            // Create heart particles during opening
+            createHeartParticles(20);
+            
+            // Show main content after animation
+            setTimeout(() => {
+                // Fade out the entire opening container
+                letterOpeningContainer.classList.add('fade-out');
+                
+                // Show the main app container
+                setTimeout(() => {
+                    letterOpeningContainer.style.display = 'none';
+                    appContainer.classList.add('show');
+                    
+                    // Create more heart particles
+                    createHeartParticles(30);
+                }, 1000);
+            }, 1500); // Wait for the letter opening animation to complete
+        }
+
+        // Start music on first user interaction
+        function startMusicOnInteraction() {
+            backgroundMusic.play().then(() => {
+                gameState.musicPlaying = true;
+                musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                musicInfo.style.display = 'block';
+                setTimeout(() => {
+                    musicInfo.style.display = 'none';
+                }, 3000);
+            }).catch(e => {
+                console.log("Autoplay blocked, user can click music button");
+                musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                gameState.musicPlaying = false;
+            });
+        }
+
+        // Create Wordle grid
+        function createWordleGrid() {
+            for (let row = 0; row < gameState.maxAttempts; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'wordle-row';
+                rowElement.id = `row-${row}`;
+                
+                for (let col = 0; col < 5; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'wordle-cell';
+                    cell.id = `cell-${row}-${col}`;
+                    rowElement.appendChild(cell);
+                }
+                
+                wordleGrid.appendChild(rowElement);
+            }
+        }
+
+        // Create virtual keyboard
+        function createKeyboard() {
+            const keyboardContainer = document.querySelector('.keyboard');
+            keyboardContainer.innerHTML = '';
+            
+            keyboardRows.forEach(row => {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'keyboard-row';
+                
+                row.forEach(key => {
+                    const keyElement = document.createElement('button');
+                    keyElement.className = 'key';
+                    keyElement.textContent = key;
+                    
+                    if (key === 'ENTER' || key === '⌫') {
+                        keyElement.classList.add('wide');
+                    }
+                    
+                    keyElement.addEventListener('click', () => handleKeyPress(key));
+                    keyElement.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        handleKeyPress(key);
+                    }, { passive: false });
+                    
+                    rowElement.appendChild(keyElement);
+                });
+                
+                keyboardContainer.appendChild(rowElement);
+            });
+        }
+
+        // Handle virtual and physical keyboard input
+        function handleKeyPress(key) {
+            if (gameState.gameOver) return;
+            
+            if (key === 'ENTER') {
+                submitGuess();
+            } else if (key === '⌫') {
+                deleteLetter();
+            } else if (gameState.currentGuess.length < 5 && /^[A-Z]$/.test(key)) {
+                addLetter(key);
+            }
+        }
+
+        // Handle physical keyboard
+        function handlePhysicalKeyboard(e) {
+            if (gameState.currentPage !== 'game') return;
+            
+            const key = e.key.toUpperCase();
+            
+            if (key === 'ENTER') {
+                submitGuess();
+            } else if (key === 'BACKSPACE') {
+                deleteLetter();
+            } else if (gameState.currentGuess.length < 5 && /^[A-Z]$/.test(key)) {
+                addLetter(key);
+            }
+        }
+
+        // Add letter to current guess
+        function addLetter(letter) {
+            gameState.currentGuess += letter;
+            updateGrid();
+        }
+
+        // Delete last letter from current guess
+        function deleteLetter() {
+            gameState.currentGuess = gameState.currentGuess.slice(0, -1);
+            updateGrid();
+        }
+
+        // Update grid display
+        function updateGrid() {
+            // Clear current row
+            for (let i = 0; i < 5; i++) {
+                const cell = document.getElementById(`cell-${gameState.currentRow}-${i}`);
+                cell.textContent = '';
+                cell.classList.remove('filled');
+            }
+            
+            // Fill with current guess
+            for (let i = 0; i < gameState.currentGuess.length; i++) {
+                const cell = document.getElementById(`cell-${gameState.currentRow}-${i}`);
+                cell.textContent = gameState.currentGuess[i];
+                cell.classList.add('filled');
+            }
+        }
+
+        // Submit guess
+        function submitGuess() {
+            if (gameState.currentGuess.length !== 5) {
+                alert('Word must be 5 letters!');
+                return;
+            }
+            
+            // Add guess to history
+            gameState.guesses.push(gameState.currentGuess);
+            
+            // Check each letter
+            const targetLetters = gameState.targetWord.split('');
+            const guessLetters = gameState.currentGuess.split('');
+            
+            // First pass: mark correct letters
+            for (let i = 0; i < 5; i++) {
+                const cell = document.getElementById(`cell-${gameState.currentRow}-${i}`);
+                
+                if (guessLetters[i] === targetLetters[i]) {
+                    cell.classList.add('correct');
+                    targetLetters[i] = null; // Mark as used
+                }
+            }
+            
+            // Second pass: mark present letters
+            for (let i = 0; i < 5; i++) {
+                const cell = document.getElementById(`cell-${gameState.currentRow}-${i}`);
+                
+                if (cell.classList.contains('correct')) continue;
+                
+                if (targetLetters.includes(guessLetters[i])) {
+                    cell.classList.add('present');
+                    targetLetters[targetLetters.indexOf(guessLetters[i])] = null; // Mark as used
+                } else {
+                    cell.classList.add('absent');
+                }
+            }
+            
+            // Update attempts counter
+            attemptsDisplay.textContent = gameState.currentRow + 1;
+            
+            // Check if won
+            if (gameState.currentGuess === gameState.targetWord) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    showQuestionPage();
+                }, 1500);
+                return;
+            }
+            
+            // Move to next row
+            gameState.currentRow++;
+            gameState.currentGuess = '';
+            
+            // Check if lost
+            if (gameState.currentRow >= gameState.maxAttempts) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    showQuestionPage();
+                }, 1500);
+            }
+        }
+
+        // Start the game
+        function startGame() {
+            gameState.currentPage = 'game';
+            landingPage.classList.add('hidden');
+            gamePage.classList.remove('hidden');
+            
+            // Reset game state
+            gameState.currentGuess = '';
+            gameState.guesses = [];
+            gameState.currentRow = 0;
+            gameState.gameOver = false;
+            gameState.letterIndex = 0;
+            
+            // Reset grid
+            for (let row = 0; row < gameState.maxAttempts; row++) {
+                for (let col = 0; col < 5; col++) {
+                    const cell = document.getElementById(`cell-${row}-${col}`);
+                    cell.className = 'wordle-cell';
+                    cell.textContent = '';
+                }
+            }
+            
+            // Reset attempts display
+            attemptsDisplay.textContent = '0';
+            
+            // Center game content
+            setTimeout(centerGameContent, 100);
+        }
+
+        // Show question page
+        function showQuestionPage() {
+            gameState.currentPage = 'question';
+            gamePage.classList.add('hidden');
+            questionPage.classList.remove('hidden');
+            
+            // Reset no button position to prevent overlapping
+            resetNoButtonPosition();
+            
+            // Create heart particles
+            createHeartParticles();
+        }
+
+        // Reset No button position
+        function resetNoButtonPosition() {
+            noButton.style.position = 'relative';
+            noButton.style.left = '0';
+            noButton.style.top = '0';
+            noButton.style.transform = 'none';
+        }
+
+        // Show "No" button message
+        function showNoMessage() {
+            noMessage.style.display = 'block';
+            createHeartParticles(20);
+        }
+
+        // Close "No" button message
+        function closeNoMessage() {
+            noMessage.style.display = 'none';
+        }
+
+        // Show love letter
+        function showLoveLetter() {
+            gameState.currentPage = 'letter';
+            questionPage.classList.add('hidden');
+            letterContainer.style.display = 'block';
+            
+            // Clear previous letter content
+            letterContent.innerHTML = '';
+            
+            // Create more heart particles
+            createHeartParticles(50);
+            
+            // Start typing animation
+            typeLoveLetter();
+        }
+
+        // Type love letter with typing effect
+        function typeLoveLetter() {
+            if (gameState.letterIndex >= gameState.letterLines.length) {
+                // Letter is complete
+                setTimeout(() => {
+                    // Show countdown
+                    countdownElement.style.display = 'block';
+                    
+                    // Start countdown
+                    let countdown = 5;
+                    countdownTimer.textContent = countdown;
+                    
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        countdownTimer.textContent = countdown;
+                        
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            showFinalPage();
+                        }
+                    }, 1000);
+                }, 1000);
+                return;
+            }
+            
+            const line = gameState.letterLines[gameState.letterIndex];
+            const lineElement = document.createElement('div');
+            lineElement.className = 'typing-line';
+            
+            if (line === '') {
+                // Empty line
+                letterContent.appendChild(lineElement);
+                gameState.letterIndex++;
+                setTimeout(typeLoveLetter, 300);
+                return;
+            }
+            
+            letterContent.appendChild(lineElement);
+            typeLine(line, lineElement, 0);
+        }
+
+        // Type a single line character by character
+        function typeLine(line, element, charIndex) {
+            if (charIndex >= line.length) {
+                // Line is complete
+                gameState.letterIndex++;
+                setTimeout(typeLoveLetter, 500);
+                return;
+            }
+            
+            element.textContent += line.charAt(charIndex);
+            charIndex++;
+            
+            // Random typing speed for natural effect
+            const speed = Math.random() * 50 + 30;
+            setTimeout(() => typeLine(line, element, charIndex), speed);
+        }
+
+        // Show final page
+        function showFinalPage() {
+            gameState.currentPage = 'final';
+            letterContainer.style.display = 'none';
+            finalPage.style.display = 'flex';
+            
+            // Create explosion of hearts
+            createHeartParticles(100);
+            
+            // Add floating hearts animation
+            setInterval(() => {
+                createHeartParticles(3);
+            }, 1000);
+        }
+
+        // Show rose modal
+        function showRoseModal() {
+            roseModal.style.display = 'flex';
+            
+            // Preload the GIF to ensure it loads properly
+            const img = new Image();
+            img.src = 'rose.gif';
+            img.onload = () => {
+                console.log('Rose GIF loaded successfully');
+            };
+            img.onerror = () => {
+                console.log('Error loading rose GIF, using fallback');
+                // If rose.gif doesn't exist, try peonies.gif
+                roseGif.src = 'peonies.gif';
+            };
+        }
+
+        // Restart game
+        function restartGame() {
+            gameState.currentPage = 'landing';
+            finalPage.style.display = 'none';
+            landingPage.classList.remove('hidden');
+            
+            // Reset letter content
+            letterContent.innerHTML = '';
+            gameState.letterIndex = 0;
+            
+            // Hide countdown
+            countdownElement.style.display = 'none';
+            
+            // Pause audio if playing
+            voiceMemo.pause();
+            voiceMemo.currentTime = 0;
+            playBtn.style.display = 'flex';
+            pauseBtn.style.display = 'none';
+            updateAudioTime();
+        }
+
+        // Toggle background music
+        function toggleMusic() {
+            if (gameState.musicPlaying) {
+                backgroundMusic.pause();
+                musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                gameState.musicPlaying = false;
+            } else {
+                backgroundMusic.play().then(() => {
+                    musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    gameState.musicPlaying = true;
+                    
+                    // Show song info temporarily
+                    musicInfo.style.display = 'block';
+                    setTimeout(() => {
+                        musicInfo.style.display = 'none';
+                    }, 3000);
+                }).catch(e => {
+                    console.log("Music play failed:", e);
+                    alert("Please click anywhere on the page first to enable audio, then click the music button.");
+                });
+            }
+        }
+
+        // Create heart particles
+        function createHeartParticles(count = 30) {
+            for (let i = 0; i < count; i++) {
+                createHeartParticle();
+            }
+        }
+
+        // Create a single heart particle
+        function createHeartParticle() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart-particle';
+            
+            // Random position
+            const x = Math.random() * window.innerWidth;
+            const y = window.innerHeight + 20;
+            
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            
+            // Random size
+            const size = Math.random() * 1.2 + 0.8;
+            heart.style.fontSize = `${size}rem`;
+            
+            // Random color variation
+            const hue = Math.random() * 20 + 340; // Red-pink range
+            heart.style.color = `hsl(${hue}, 100%, 65%)`;
+            
+            document.body.appendChild(heart);
+            
+            // Animate
+            const duration = Math.random() * 3 + 2;
+            const animation = heart.animate([
+                { transform: `translateY(0px) rotate(0deg)`, opacity: 1 },
+                { transform: `translateY(-${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+            });
+            
+            // Remove after animation
+            animation.onfinish = () => {
+                heart.remove();
+            };
+        }
+
+        // Audio controls
+        function playAudio() {
+            voiceMemo.play().catch(e => {
+                console.log("Audio play failed:", e);
+                // Show simulated audio playback for demo
+                audioTime.textContent = "0:18 / 1:45";
+                playBtn.style.display = 'none';
+                pauseBtn.style.display = 'flex';
+            });
+            
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+        }
+
+        function pauseAudio() {
+            voiceMemo.pause();
+            pauseBtn.style.display = 'none';
+            playBtn.style.display = 'flex';
+        }
+
+        function updateAudioTime() {
+            if (voiceMemo.duration) {
+                const current = formatTime(voiceMemo.currentTime);
+                const total = formatTime(voiceMemo.duration);
+                audioTime.textContent = `${current} / ${total}`;
+            }
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Prevent scrolling on the page
+        function preventScrolling() {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Also prevent touch scrolling on mobile
+            document.addEventListener('touchmove', function(e) {
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('.letter-content')) {
+                    return; // Allow scrolling on interactive elements and letter content
+                }
+                e.preventDefault();
+            }, { passive: false });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
