@@ -6,6 +6,7 @@
     <title>Can You Be My Valentine?</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ... [All existing styles remain exactly the same] ... */
         * {
             margin: 0;
             padding: 0;
@@ -795,7 +796,7 @@
             <p>This is just the beginning of our beautiful journey together.</p>
             <p>I love you more than words can express, Carmina.</p>
             
-            <!-- Voice Message Section -->
+            <!-- Voice Message Section 1 -->
             <div class="audio-player">
                 <div class="audio-title">A special voice message for you:</div>
                 <div class="audio-date">"For my future wife" recorded on September 17, 2025</div>
@@ -810,6 +811,25 @@
                 </div>
                 <audio id="voice-memo" preload="metadata">
                     <source src="audio.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            
+            <!-- Voice Message Section 2 -->
+            <div class="audio-player">
+                <div class="audio-title">Another voice message for you:</div>
+                <div class="audio-date">"Made for my future wife (2)" recorded on September 18, 2025</div>
+                <div class="audio-controls">
+                    <button id="play-btn-2" class="audio-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button id="pause-btn-2" class="audio-btn">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <div id="audio-time-2">0:00 / 0:00</div>
+                </div>
+                <audio id="voice-memo-2" preload="metadata">
+                    <source src="audio2.mp3" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             </div>
@@ -890,10 +910,19 @@
         const wordleGrid = document.getElementById('wordle-grid');
         const attemptsDisplay = document.getElementById('attempts');
         const letterContent = document.getElementById('letter-content');
+        
+        // First audio player elements
         const playBtn = document.getElementById('play-btn');
         const pauseBtn = document.getElementById('pause-btn');
         const audioTime = document.getElementById('audio-time');
         const voiceMemo = document.getElementById('voice-memo');
+        
+        // Second audio player elements
+        const playBtn2 = document.getElementById('play-btn-2');
+        const pauseBtn2 = document.getElementById('pause-btn-2');
+        const audioTime2 = document.getElementById('audio-time-2');
+        const voiceMemo2 = document.getElementById('voice-memo-2');
+        
         const noMessage = document.getElementById('no-message');
         const closeMessageBtn = document.getElementById('close-message');
         const countdownElement = document.getElementById('countdown');
@@ -926,10 +955,15 @@
             yesButton.addEventListener('click', showLoveLetter);
             noButton.addEventListener('click', showNoMessage);
             
-            // Set up audio controls
-            playBtn.addEventListener('click', playAudio);
-            pauseBtn.addEventListener('click', pauseAudio);
-            voiceMemo.addEventListener('timeupdate', updateAudioTime);
+            // Set up first audio controls
+            playBtn.addEventListener('click', () => playAudio(voiceMemo, playBtn, pauseBtn, audioTime));
+            pauseBtn.addEventListener('click', () => pauseAudio(voiceMemo, playBtn, pauseBtn));
+            voiceMemo.addEventListener('timeupdate', () => updateAudioTime(voiceMemo, audioTime));
+            
+            // Set up second audio controls
+            playBtn2.addEventListener('click', () => playAudio(voiceMemo2, playBtn2, pauseBtn2, audioTime2));
+            pauseBtn2.addEventListener('click', () => pauseAudio(voiceMemo2, playBtn2, pauseBtn2));
+            voiceMemo2.addEventListener('timeupdate', () => updateAudioTime(voiceMemo2, audioTime2));
             
             // Set up message close button
             closeMessageBtn.addEventListener('click', closeNoMessage);
@@ -950,8 +984,9 @@
             // Add keyboard event listener for physical keyboard
             document.addEventListener('keydown', handlePhysicalKeyboard);
             
-            // Initialize audio time display
-            updateAudioTime();
+            // Initialize audio time displays
+            updateAudioTime(voiceMemo, audioTime);
+            updateAudioTime(voiceMemo2, audioTime2);
             
             // Start background music on user interaction
             document.addEventListener('click', startMusicOnInteraction, { once: true });
@@ -959,6 +994,10 @@
             // Make sure no scrollbar appears
             document.body.style.overflow = 'hidden';
             window.addEventListener('resize', preventScrollbar);
+            
+            // Set initial button states
+            pauseBtn.style.display = 'none';
+            pauseBtn2.style.display = 'none';
         }
         
         // Prevent scrollbar from appearing
@@ -1335,12 +1374,18 @@
             // Hide countdown
             countdownElement.style.display = 'none';
             
-            // Pause audio if playing
+            // Pause both audio players if playing
             voiceMemo.pause();
             voiceMemo.currentTime = 0;
             playBtn.style.display = 'flex';
             pauseBtn.style.display = 'none';
-            updateAudioTime();
+            updateAudioTime(voiceMemo, audioTime);
+            
+            voiceMemo2.pause();
+            voiceMemo2.currentTime = 0;
+            playBtn2.style.display = 'flex';
+            pauseBtn2.style.display = 'none';
+            updateAudioTime(voiceMemo2, audioTime2);
             
             // Make sure no scrollbar
             document.body.style.overflow = 'hidden';
@@ -1415,31 +1460,33 @@
             };
         }
 
-        // Audio controls
-        function playAudio() {
-            voiceMemo.play().catch(e => {
+        // Audio controls (updated to work with multiple players)
+        function playAudio(audioElement, playBtnElement, pauseBtnElement, timeElement) {
+            audioElement.play().catch(e => {
                 console.log("Audio play failed:", e);
                 // Show simulated audio playback for demo
-                audioTime.textContent = "0:18 / 1:45";
-                playBtn.style.display = 'none';
-                pauseBtn.style.display = 'flex';
+                if (audioElement.id === 'voice-memo') {
+                    timeElement.textContent = "0:18 / 1:45";
+                } else if (audioElement.id === 'voice-memo-2') {
+                    timeElement.textContent = "0:22 / 1:52";
+                }
             });
             
-            playBtn.style.display = 'none';
-            pauseBtn.style.display = 'flex';
+            playBtnElement.style.display = 'none';
+            pauseBtnElement.style.display = 'flex';
         }
 
-        function pauseAudio() {
-            voiceMemo.pause();
-            pauseBtn.style.display = 'none';
-            playBtn.style.display = 'flex';
+        function pauseAudio(audioElement, playBtnElement, pauseBtnElement) {
+            audioElement.pause();
+            pauseBtnElement.style.display = 'none';
+            playBtnElement.style.display = 'flex';
         }
 
-        function updateAudioTime() {
-            if (voiceMemo.duration) {
-                const current = formatTime(voiceMemo.currentTime);
-                const total = formatTime(voiceMemo.duration);
-                audioTime.textContent = `${current} / ${total}`;
+        function updateAudioTime(audioElement, timeElement) {
+            if (audioElement.duration) {
+                const current = formatTime(audioElement.currentTime);
+                const total = formatTime(audioElement.duration);
+                timeElement.textContent = `${current} / ${total}`;
             }
         }
 
